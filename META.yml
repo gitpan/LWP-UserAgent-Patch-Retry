@@ -22,4 +22,4 @@ requires:
   Module::Patch: 0.12
   perl: 5.010001
 resources: {}
-version: 0.01
+version: 0.02

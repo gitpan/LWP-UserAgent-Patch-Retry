@@ -8,7 +8,7 @@ use Log::Any '$log';
 use Module::Patch 0.12 qw();
 use base qw(Module::Patch);
 
-our $VERSION = '0.01'; # VERSION
+our $VERSION = '0.02'; # VERSION
 
 our %config;
 
@@ -82,7 +82,7 @@ LWP::UserAgent::Patch::Retry - Add retries
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
@@ -110,7 +110,13 @@ Delay between retries, in seconds.
 
 Specify custom criteria of whether to retry. Will be passed C<< ($self,
 $response) >> and should return 1 if retry should be performed. For example if
-you do not want to retry on 404 errors.
+you do not want to retry on 404 errors:
+
+ use LWP::UserAgent::Patch::Retry
+     -criteria => sub {
+         my ($self, $resp) = @_;
+         return 1 if !$resp->is_success && $resp->code != 404;
+     };
 
 =head1 FAQ
 

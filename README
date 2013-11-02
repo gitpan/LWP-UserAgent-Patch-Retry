@@ -2,7 +2,7 @@ NAME
     LWP::UserAgent::Patch::Retry - Add retries
 
 VERSION
-    version 0.01
+    version 0.02
 
 SYNOPSIS
      use LWP::UserAgent::Patch::Retry -n => 2, -delay => 3;
@@ -24,7 +24,13 @@ CONFIGURATION
   -criteria => CODE
     Specify custom criteria of whether to retry. Will be passed "($self,
     $response)" and should return 1 if retry should be performed. For
-    example if you do not want to retry on 404 errors.
+    example if you do not want to retry on 404 errors:
+
+     use LWP::UserAgent::Patch::Retry
+         -criteria => sub {
+             my ($self, $resp) = @_;
+             return 1 if !$resp->is_success && $resp->code != 404;
+         };
 
 FAQ
   Why not subclass?
